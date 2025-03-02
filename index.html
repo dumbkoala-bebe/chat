@@ -30,7 +30,11 @@
         <button class="clear-btn" onclick="clearMessages()">清空聊天記錄</button>
     </div>
 
-    <script type="module">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js"></script>
+
+    <script>
         // 🔹 設定密碼（可自行更改）
         const correctPassword = "396758"; 
 
@@ -40,4 +44,21 @@
                 document.getElementById("login-container").style.display = "none";
                 document.getElementById("chat-container").style.display = "block";
             } else {
-                alert("密碼錯誤！"
+                alert("密碼錯誤！");
+            }
+        }
+
+        // 🔹 替換你的 Firebase 設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyAh099ptB4Wq5rDFvBq0AnrNNVozQKNfzQ",
+            authDomain: "chat-134bc.firebaseapp.com",
+            databaseURL: "https://chat-134bc-default-rtdb.firebaseio.com",
+            projectId: "chat-134bc",
+            storageBucket: "chat-134bc.firebasestorage.app",
+            messagingSenderId: "419171035077",
+            appId: "1:419171035077:web:832803ce4a865f4c39cdac"
+        };
+
+        // 🔹 初始化 Firebase
+        firebase.initializeApp(firebaseConfig);
+        
