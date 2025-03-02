@@ -30,15 +30,12 @@
         <button class="clear-btn" onclick="clearMessages()">清空聊天記錄</button>
     </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js"></script>
-
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             console.log("📌 頁面已載入，監聽登入按鈕");
             document.getElementById("loginBtn").addEventListener("click", checkPassword);
-            document.getElementById("sendBtn").addEventListener("click", sendMessage); // 確保發送按鈕有綁定事件
+            document.getElementById("sendBtn").addEventListener("click", sendMessage); // 綁定發送按鈕事件
+            loadMessages(); // 頁面載入時顯示已儲存的訊息
         });
 
         const correctPassword = "396758"; 
@@ -56,49 +53,50 @@
             }
         }
 
-        // 🔹 Firebase 設定
-        const firebaseConfig = {
-            apiKey: "AIzaSyAh099ptB4Wq5rDFvBq0AnrNNVozQKNfzQ",
-            authDomain: "chat-134bc.firebaseapp.com",
-            databaseURL: "https://chat-134bc-default-rtdb.firebaseio.com",
-            projectId: "chat-134bc",
-            storageBucket: "chat-134bc.firebasestorage.app",
-            messagingSenderId: "419171035077",
-            appId: "1:419171035077:web:832803ce4a865f4c39cdac"
-        };
-
-        // 🔹 初始化 Firebase
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        const messagesRef = database.ref("messages");
-
         // 送出訊息
         function sendMessage() {
             const messageInput = document.getElementById("messageInput");
             const messageText = messageInput.value.trim();
-
             if (messageText !== "") {
-                // 發送訊息到 Firebase
-                messagesRef.push({
+                // 儲存訊息到 localStorage
+                let messages = JSON.parse(localStorage.getItem("messages")) || [];
+                messages.push({
                     text: messageText,
                     timestamp: new Date().toLocaleString()
                 });
+                localStorage.setItem("messages", JSON.stringify(messages));
+
+                // 顯示訊息
+                displayMessages();
                 messageInput.value = ""; // 清空訊息框
             }
         }
 
-        // 監聽 Firebase 即時更新
-        messagesRef.on("child_added", function(snapshot) {
-            const message = snapshot.val();
-            const messageElement = document.createElement("p");
-            messageElement.textContent = `${message.timestamp}：${message.text}`;
-            document.getElementById("messages").appendChild(messageElement);
-        });
+        // 顯示訊息
+        function displayMessages() {
+            const messagesList = document.getElementById("messages");
+            messagesList.innerHTML = ""; // 清空現有訊息
 
-        // 清除所有訊息
+            let messages = JSON.parse(localStorage.getItem("messages")) || [];
+            messages.forEach(function(message) {
+                const listItem = document.createElement("li");
+                listItem.className = "message";
+                listItem.innerHTML = `${message.text} <small>(${message.timestamp})</small>`;
+                messagesList.appendChild(listItem);
+            });
+        }
+
+        // 頁面載入時顯示訊息
+        function loadMessages() {
+            displayMessages();
+        }
+
+        // 清除訊息
         function clearMessages() {
-            messagesRef.remove(); // 刪除 Firebase 裡的資料
-            document.getElementById("messages").innerHTML = ""; // 清空畫面上的訊息
+            if (confirm("確定要清空聊天記錄嗎？")) {
+                localStorage.removeItem("messages"); // 清除 localStorage 中的訊息
+                document.getElementById("messages").innerHTML = ""; // 清空畫面上的訊息
+            }
         }
     </script>
 </body>
