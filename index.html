@@ -86,16 +86,17 @@
         const database = getDatabase(app);
         const messagesRef = ref(database, "messages");
 
-        // 監聽頁面載入事件
-        document.addEventListener("DOMContentLoaded", function () {
-            console.log(" 頁面已載入，監聽登入按鈕");
-            document.getElementById("loginBtn").addEventListener("click", checkPassword);
-            document.getElementById("sendBtn").addEventListener("click", sendMessage); // 綁定發送訊息按鈕
+        // document.addEventListener("DOMContentLoaded", function () {
+    console.log(" 頁面已載入，監聽登入按鈕");
+    document.getElementById("loginBtn").addEventListener("click", checkPassword);
+    document.getElementById("sendBtn").addEventListener("click", sendMessage); // 綁定發送訊息按鈕
 
-            // 手動設置焦點到密碼輸入框
-            document.getElementById("password").focus();
-        });
+    // 手動設置焦點到密碼輸入框
+    document.getElementById("password").focus();
 
+    // 綁定清空聊天記錄按鈕事件監聽器
+    document.querySelector(".clear-btn").addEventListener("click", clearMessages); // 添加此行
+});
         const correctPassword = "396758";
 
         // 驗證密碼
