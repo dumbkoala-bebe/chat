@@ -49,7 +49,6 @@
 
 <body>
 
-    <!-- 登入區塊 -->
     <div id="login-container">
         <h2>請輸入密碼進入聊天室</h2>
         <label for="password">密碼：</label>
@@ -57,7 +56,6 @@
         <button id="loginBtn">登入</button>
     </div>
 
-    <!-- 聊天室區塊 -->
     <div id="chat-container">
         <h2>聊天室</h2>
         <ul id="messages"></ul>
@@ -67,33 +65,30 @@
         <button class="clear-btn" onclick="clearMessages()">清空聊天記錄</button>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-
     <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js";
 
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyAh099ptB4Wq5rDFvBq0AnrNNVozQKNfzQ",
-    authDomain: "chat-134bc.firebaseapp.com",
-    databaseURL: "https://chat-134bc-default-rtdb.firebaseio.com",
-    projectId: "chat-134bc",
-    storageBucket: "chat-134bc.firebasestorage.app",
-    messagingSenderId: "419171035077",
-    appId: "1:419171035077:web:832803ce4a865f4c39cdac"
-  };
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAh099ptB4Wq5rDFvBq0AnrNNVozQKNfzQ",
+            authDomain: "chat-134bc.firebaseapp.com",
+            databaseURL: "https://chat-134bc-default-rtdb.firebaseio.com",
+            projectId: "chat-134bc",
+            storageBucket: "chat-134bc.firebasestorage.app",
+            messagingSenderId: "419171035077",
+            appId: "1:419171035077:web:832803ce4a865f4c39cdac"
+        };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-</script>
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const messagesRef = ref(database, "messages");
 
         // 監聽頁面載入事件
         document.addEventListener("DOMContentLoaded", function () {
-            console.log("📌 頁面已載入，監聽登入按鈕");
+            console.log(" 頁面已載入，監聽登入按鈕");
             document.getElementById("loginBtn").addEventListener("click", checkPassword);
             document.getElementById("sendBtn").addEventListener("click", sendMessage); // 綁定發送訊息按鈕
 
@@ -101,11 +96,11 @@
             document.getElementById("password").focus();
         });
 
-        const correctPassword = "396758"; 
+        const correctPassword = "396758";
 
         // 驗證密碼
         function checkPassword() {
-            console.log("🔑 嘗試登入...");
+            console.log(" 嘗試登入...");
             const inputPassword = document.getElementById("password").value;
             if (inputPassword === correctPassword) {
                 console.log("✅ 密碼正確，進入聊天室");
@@ -124,7 +119,7 @@
 
             if (messageText !== "") {
                 // 發送訊息到 Firebase
-                messagesRef.push({
+                push(messagesRef, {
                     text: messageText,
                     timestamp: new Date().toLocaleString()
                 });
@@ -133,7 +128,7 @@
         }
 
         // 監聽 Firebase 即時更新
-        messagesRef.on("child_added", function (snapshot) {
+        onChildAdded(messagesRef, (snapshot) => {
             const message = snapshot.val();
             const messageElement = document.createElement("p");
             messageElement.textContent = `${message.timestamp}：${message.text}`;
@@ -142,10 +137,11 @@
 
         // 清除所有訊息
         function clearMessages() {
-            messagesRef.remove(); // 刪除 Firebase 裡的資料
+            remove(messagesRef); // 刪除 Firebase 裡的資料
             document.getElementById("messages").innerHTML = ""; // 清空畫面上的訊息
         }
     </script>
 
 </body>
+
 </html>
