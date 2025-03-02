@@ -135,11 +135,14 @@
             document.getElementById("messages").appendChild(messageElement);
         });
 
-        // 清除所有訊息
-        function clearMessages() {
-            remove(messagesRef); // 刪除 Firebase 裡的資料
-            document.getElementById("messages").innerHTML = ""; // 清空畫面上的訊息
-        }
+// 清除所有訊息
+function clearMessages() {
+    remove(messagesRef).then(() => { // 刪除 Firebase 裡的資料
+        document.getElementById("messages").innerHTML = ""; // 清空畫面上的訊息
+    }).catch((error) => {
+        console.error("清除訊息失敗：", error);
+    });
+}
     </script>
 
 </body>
