@@ -52,7 +52,6 @@
     <!-- 登入區塊 -->
     <div id="login-container">
         <h2>請輸入密碼進入聊天室</h2>
-        <!-- 添加 label 並指定 for 屬性對應到 input 的 id -->
         <label for="password">密碼：</label>
         <input type="password" id="password" placeholder="輸入密碼">
         <button id="loginBtn">登入</button>
@@ -62,7 +61,6 @@
     <div id="chat-container">
         <h2>聊天室</h2>
         <ul id="messages"></ul>
-        <!-- 添加 label 並指定 for 屬性對應到 input 的 id -->
         <label for="messageInput">訊息：</label>
         <input type="text" id="messageInput" placeholder="輸入訊息">
         <button id="sendBtn">發送</button>
@@ -74,7 +72,7 @@
     <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js"></script>
 
     <script>
-        // Firebase 設定
+        // 確保 Firebase 已經正確載入，初始化 Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAh099ptB4Wq5rDFvBq0AnrNNVozQKNfzQ",
             authDomain: "chat-134bc.firebaseapp.com",
@@ -85,8 +83,8 @@
             appId: "1:419171035077:web:832803ce4a865f4c39cdac"
         };
 
-        // 初始化 Firebase
-        firebase.initializeApp(firebaseConfig);
+        // 在這裡初始化 Firebase
+        const app = firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         const messagesRef = database.ref("messages");
 
