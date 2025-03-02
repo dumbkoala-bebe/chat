@@ -138,8 +138,14 @@
 // 清除所有訊息
 async function clearMessages() {
     try {
+        console.log("嘗試刪除 Firebase 資料...");
         await remove(messagesRef); // 刪除 Firebase 裡的資料
+        console.log("Firebase 資料刪除成功！");
+
+        console.log("嘗試清空畫面上的訊息...");
         document.getElementById("messages").innerHTML = ""; // 清空畫面上的訊息
+        console.log("畫面上的訊息已清空！");
+
         console.log("✅ 訊息已成功清除！");
     } catch (error) {
         console.error("❌ 清除訊息失敗：", error);
