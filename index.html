@@ -18,7 +18,7 @@
     <div id="login-container">
         <h2>請輸入密碼進入聊天室</h2>
         <input type="password" id="password" placeholder="輸入密碼">
-        <button onclick="checkPassword()">登入</button>
+        <button id="loginBtn">登入</button>
     </div>
 
     <!-- 聊天室區塊 -->
@@ -35,30 +35,31 @@
     <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js"></script>
 
     <script>
-        // 🔹 設定密碼（可自行更改）
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("📌 頁面已載入，監聽登入按鈕");
+            document.getElementById("loginBtn").addEventListener("click", checkPassword);
+        });
+
         const correctPassword = "396758"; 
 
         function checkPassword() {
+            console.log("🔑 嘗試登入...");
             const inputPassword = document.getElementById("password").value;
             if (inputPassword === correctPassword) {
+                console.log("✅ 密碼正確，進入聊天室");
                 document.getElementById("login-container").style.display = "none";
                 document.getElementById("chat-container").style.display = "block";
             } else {
+                console.log("❌ 密碼錯誤！");
                 alert("密碼錯誤！");
             }
         }
 
-        // 🔹 替換你的 Firebase 設定
+        // 🔹 Firebase 設定
         const firebaseConfig = {
             apiKey: "AIzaSyAh099ptB4Wq5rDFvBq0AnrNNVozQKNfzQ",
             authDomain: "chat-134bc.firebaseapp.com",
             databaseURL: "https://chat-134bc-default-rtdb.firebaseio.com",
             projectId: "chat-134bc",
             storageBucket: "chat-134bc.firebasestorage.app",
-            messagingSenderId: "419171035077",
-            appId: "1:419171035077:web:832803ce4a865f4c39cdac"
-        };
-
-        // 🔹 初始化 Firebase
-        firebase.initializeApp(firebaseConfig);
-        
+            messagingSenderId:
