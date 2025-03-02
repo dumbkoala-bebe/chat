@@ -7,7 +7,7 @@
     <style>
         body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
         #chat-container { display: none; max-width: 500px; margin: auto; border: 1px solid #ccc; padding: 10px; border-radius: 10px; }
-        #messages { list-style-type: none; padding: 0; }
+        #messages { list-style-type: none; padding: 0; max-height: 300px; overflow-y: auto; }
         .message { background: #f1f1f1; padding: 8px; margin: 5px 0; border-radius: 5px; }
         .clear-btn { background: red; color: white; border: none; cursor: pointer; padding: 8px; border-radius: 5px; margin-top: 10px; }
     </style>
@@ -30,8 +30,9 @@
         <button class="clear-btn" onclick="clearMessages()">清空聊天記錄</button>
     </div>
 
-    <script>
-        const correctPassword = "396758"; // 設定聊天室密碼
+    <script type="module">
+        // 🔹 設定密碼（可自行更改）
+        const correctPassword = "396758"; 
 
         function checkPassword() {
             const inputPassword = document.getElementById("password").value;
@@ -39,33 +40,4 @@
                 document.getElementById("login-container").style.display = "none";
                 document.getElementById("chat-container").style.display = "block";
             } else {
-                alert("密碼錯誤！");
-            }
-        }
-
-        function sendMessage() {
-            const messageInput = document.getElementById("messageInput");
-            const messageText = messageInput.value.trim();
-            if (messageText === "") return;
-
-            const messagesList = document.getElementById("messages");
-            const listItem = document.createElement("li");
-            listItem.className = "message";
-            
-            const time = new Date().toLocaleTimeString(); // 取得當前時間
-            listItem.innerHTML = `${messageText} <small>(${time})</small>`;
-
-            messagesList.appendChild(listItem);
-            messageInput.value = "";
-        }
-
-        function clearMessages() {
-            if (confirm("確定要清空聊天記錄嗎？")) {
-                document.getElementById("messages").innerHTML = ""; // 清空訊息列表
-            }
-        }
-    </script>
-
-<!-- Updated for GitHub Pages -->
-</body>
-</html>
+                alert("密碼錯誤！"
