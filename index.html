@@ -102,45 +102,4 @@
         function checkPassword() {
             console.log("🔑 嘗試登入...");
             const inputPassword = document.getElementById("password").value;
-            if (inputPassword === correctPassword) {
-                console.log("✅ 密碼正確，進入聊天室");
-                document.getElementById("login-container").style.display = "none";
-                document.getElementById("chat-container").style.display = "block";
-            } else {
-                console.log("❌ 密碼錯誤！");
-                alert("密碼錯誤！");
-            }
-        }
-
-        // 送出訊息
-        function sendMessage() {
-            const messageInput = document.getElementById("messageInput");
-            const messageText = messageInput.value.trim();
-
-            if (messageText !== "") {
-                // 發送訊息到 Firebase
-                messagesRef.push({
-                    text: messageText,
-                    timestamp: new Date().toLocaleString()
-                });
-                messageInput.value = ""; // 清空訊息框
-            }
-        }
-
-        // 監聽 Firebase 即時更新
-        messagesRef.on("child_added", function (snapshot) {
-            const message = snapshot.val();
-            const messageElement = document.createElement("p");
-            messageElement.textContent = `${message.timestamp}：${message.text}`;
-            document.getElementById("messages").appendChild(messageElement);
-        });
-
-        // 清除所有訊息
-        function clearMessages() {
-            messagesRef.remove(); // 刪除 Firebase 裡的資料
-            document.getElementById("messages").innerHTML = ""; // 清空畫面上的訊息
-        }
-    </script>
-
-</body>
-</html>
+           
