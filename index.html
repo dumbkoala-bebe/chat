@@ -91,6 +91,9 @@
             console.log("📌 頁面已載入，監聽登入按鈕");
             document.getElementById("loginBtn").addEventListener("click", checkPassword);
             document.getElementById("sendBtn").addEventListener("click", sendMessage); // 綁定發送訊息按鈕
+
+            // 手動設置焦點到密碼輸入框
+            document.getElementById("password").focus();
         });
 
         const correctPassword = "396758"; 
