@@ -1,22 +1,52 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js"></script>
-
-    <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>簡易聊天室</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
-        #chat-container { display: none; max-width: 500px; margin: auto; border: 1px solid #ccc; padding: 10px; border-radius: 10px; }
-        #messages { list-style-type: none; padding: 0; max-height: 300px; overflow-y: auto; }
-        .message { background: #f1f1f1; padding: 8px; margin: 5px 0; border-radius: 5px; }
-        .clear-btn { background: red; color: white; border: none; cursor: pointer; padding: 8px; border-radius: 5px; margin-top: 10px; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        #chat-container {
+            display: none;
+            max-width: 500px;
+            margin: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        #messages {
+            list-style-type: none;
+            padding: 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .message {
+            background: #f1f1f1;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+
+        .clear-btn {
+            background: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
     </style>
 </head>
+
 <body>
 
     <!-- 登入區塊 -->
@@ -36,38 +66,36 @@
     </div>
 
     <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js"></script>
 
-<script>
-    // Firebase 設定
-    const firebaseConfig = {
-        apiKey: "AIzaSyAh099ptB4Wq5rDFvBq0AnrNNVozQKNfzQ",
-        authDomain: "chat-134bc.firebaseapp.com",
-        databaseURL: "https://chat-134bc-default-rtdb.firebaseio.com",
-        projectId: "chat-134bc",
-        storageBucket: "chat-134bc.firebasestorage.app",
-        messagingSenderId: "419171035077",
-        appId: "1:419171035077:web:832803ce4a865f4c39cdac"
-    };
-
-    // 初始化 Firebase
-    firebase.initializeApp(firebaseConfig);
-
-    // 在控制台中輸出確認是否成功初始化
-    console.log("Firebase 已成功初始化", firebase.apps);
-</script>
-
-    
     <script>
+        // Firebase 設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyAh099ptB4Wq5rDFvBq0AnrNNVozQKNfzQ",
+            authDomain: "chat-134bc.firebaseapp.com",
+            databaseURL: "https://chat-134bc-default-rtdb.firebaseio.com",
+            projectId: "chat-134bc",
+            storageBucket: "chat-134bc.firebasestorage.app",
+            messagingSenderId: "419171035077",
+            appId: "1:419171035077:web:832803ce4a865f4c39cdac"
+        };
+
+        // 初始化 Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const messagesRef = database.ref("messages");
+
+        // 監聽頁面載入事件
         document.addEventListener("DOMContentLoaded", function () {
             console.log("📌 頁面已載入，監聽登入按鈕");
             document.getElementById("loginBtn").addEventListener("click", checkPassword);
-            document.getElementById("sendBtn").addEventListener("click", sendMessage); // 確保發送按鈕有綁定事件
+            document.getElementById("sendBtn").addEventListener("click", sendMessage); // 綁定發送訊息按鈕
         });
 
         const correctPassword = "396758"; 
 
+        // 驗證密碼
         function checkPassword() {
             console.log("🔑 嘗試登入...");
             const inputPassword = document.getElementById("password").value;
@@ -80,22 +108,6 @@
                 alert("密碼錯誤！");
             }
         }
-
-        // 🔹 Firebase 設定
-        const firebaseConfig = {
-            apiKey: "AIzaSyAh099ptB4Wq5rDFvBq0AnrNNVozQKNfzQ",
-            authDomain: "chat-134bc.firebaseapp.com",
-            databaseURL: "https://chat-134bc-default-rtdb.firebaseio.com",
-            projectId: "chat-134bc",
-            storageBucket: "chat-134bc.firebasestorage.app",
-            messagingSenderId: "419171035077",
-            appId: "1:419171035077:web:832803ce4a865f4c39cdac"
-        };
-
-        // 🔹 初始化 Firebase
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        const messagesRef = database.ref("messages");
 
         // 送出訊息
         function sendMessage() {
@@ -113,7 +125,7 @@
         }
 
         // 監聽 Firebase 即時更新
-        messagesRef.on("child_added", function(snapshot) {
+        messagesRef.on("child_added", function (snapshot) {
             const message = snapshot.val();
             const messageElement = document.createElement("p");
             messageElement.textContent = `${message.timestamp}：${message.text}`;
@@ -126,5 +138,6 @@
             document.getElementById("messages").innerHTML = ""; // 清空畫面上的訊息
         }
     </script>
+
 </body>
 </html>
