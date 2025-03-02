@@ -55,16 +55,62 @@
             }
         }
 
-        // 🔹 Firebase 設定
+        // 🔹 Firebase 設定 (修正 storageBucket)
         const firebaseConfig = {
             apiKey: "AIzaSyAh099ptB4Wq5rDFvBq0AnrNNVozQKNfzQ",
             authDomain: "chat-134bc.firebaseapp.com",
             databaseURL: "https://chat-134bc-default-rtdb.firebaseio.com",
             projectId: "chat-134bc",
-            storageBucket: "chat-134bc.firebasestorage.app",
+            storageBucket: "chat-134bc.appspot.com",  // ⚠️ 修正錯誤的 storageBucket
             messagingSenderId: "419171035077",
-    appId: "1:419171035077:web:832803ce4a865f4c39cdac"
-  };
+            appId: "1:419171035077:web:832803ce4a865f4c39cdac"
+        };
 
-  firebase.initializeApp(firebaseConfig);
-</script>
+        // 🔥 初始化 Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const messagesRef = database.ref("messages");
+
+        // ✅ 監聽 Firebase 訊息，讓訊息即時同步
+        messagesRef.on("child_added", function(snapshot) {
+            const message = snapshot.val();
+            displayMessage(message.text, message.timestamp);
+        });
+
+        // ✅ 發送訊息功能
+        function sendMessage() {
+            const messageInput = document.getElementById("messageInput");
+            const messageText = messageInput.value.trim();
+            if (messageText === "") return;
+
+            const timestamp = new Date().toLocaleString();
+            messagesRef.push({ text: messageText, timestamp: timestamp });
+
+            messageInput.value = "";
+        }
+
+        // ✅ 清除訊息
+        function clearMessages() {
+            if (confirm("確定要清空聊天記錄嗎？")) {
+                messagesRef.remove();
+                document.getElementById("messages").innerHTML = ""; // 清空畫面
+            }
+        }
+
+        // ✅ 監聽 Firebase 資料刪除（同步清空畫面）
+        messagesRef.on("child_removed", function() {
+            document.getElementById("messages").innerHTML = "";
+        });
+
+        // ✅ 顯示訊息
+        function displayMessage(text, timestamp) {
+            const messagesList = document.getElementById("messages");
+            const listItem = document.createElement("li");
+            listItem.className = "message";
+            listItem.innerHTML = `${text} <small>(${timestamp})</small>`;
+            messagesList.appendChild(listItem);
+        }
+
+    </script>
+</body>
+</html>
